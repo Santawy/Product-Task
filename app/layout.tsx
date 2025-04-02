@@ -3,16 +3,11 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import "./globals.css";
 
-interface LayoutProps {
-  children: ReactNode;
-  title?: string;
-}
-
-const Layout = ({ children, title = "Products App" }: LayoutProps) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <html className="min-h-screen bg-gray-100">
       <Head>
-        <title>{title}</title>
+        <title>Product App</title>
         <meta
           name="description"
           content="A simple products application built with Next.js"

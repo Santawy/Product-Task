@@ -8,10 +8,7 @@ interface LayoutProps {
   title?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  title = "Products App",
-}) => {
+const Layout = ({ children, title = "Products App" }: LayoutProps) => {
   return (
     <html className="min-h-screen bg-gray-100">
       <Head>

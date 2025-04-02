@@ -1,21 +1,27 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Image from "next/image";
 import {
   fetchProductById,
   deleteProduct,
-  Product,
   fetchProducts,
 } from "../../services/products";
 
-interface ParamsProps {
-  id: string;
+// Correct type definitions for App Router
+type Props = {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const product = await fetchProductById(params.id);
+
+  return {
+    title: product ? `${product.title} - Products App` : "Product Not Found",
+  };
 }
 
-export default async function ProductDetail({
-  params,
-}: {
-  params: ParamsProps;
-}) {
+export default async function ProductPage({ params }: Props) {
   const product = await fetchProductById(params.id);
 
   if (!product) {
@@ -38,6 +44,7 @@ export default async function ProductDetail({
           </div>
         </div>
         <div className="md:w-2/3 p-6">
+          {/* Rest of your product detail JSX remains the same */}
           <div className="flex justify-between items-start">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">
               {product.title}
@@ -82,11 +89,10 @@ export default async function ProductDetail({
   );
 }
 
-// Generate static paths at build time
-export async function generateStaticParams(): Promise<ParamsProps[]> {
+export async function generateStaticParams() {
   const products = await fetchProducts();
 
-  return products.map((product: Product) => ({
+  return products.map((product) => ({
     id: product.id.toString(),
   }));
 }

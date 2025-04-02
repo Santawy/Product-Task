@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 import Image from "next/image";
 import {
   fetchProductById,
@@ -8,22 +7,8 @@ import {
   fetchProducts,
 } from "../../services/products";
 
-// Correct type definition for page props
 interface ParamsProps {
   id: string;
-}
-
-// Generate metadata including title
-export async function generateMetadata({
-  params,
-}: {
-  params: ParamsProps;
-}): Promise<Metadata> {
-  const product = await fetchProductById(params.id);
-
-  return {
-    title: product ? `${product.title} - Products App` : "Product Not Found",
-  };
 }
 
 export default async function ProductDetail({

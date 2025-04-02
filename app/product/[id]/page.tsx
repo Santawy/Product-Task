@@ -8,16 +8,20 @@ import {
   fetchProducts,
 } from "../../services/products";
 
-interface ProductDetailProps {
+// Define proper types for Next.js App Router
+interface PageProps {
   params: {
     id: string;
+  };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
   };
 }
 
 // Generate metadata including title
 export async function generateMetadata({
   params,
-}: ProductDetailProps): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const product = await fetchProductById(params.id);
 
   return {
@@ -25,7 +29,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetail({ params }: ProductDetailProps) {
+export default async function ProductDetail({ params }: PageProps) {
   const product = await fetchProductById(params.id);
 
   if (!product) {
@@ -93,7 +97,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
 }
 
 // Generate static paths at build time
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<Array<{ id: string }>> {
   const products = await fetchProducts();
 
   return products.map((product: Product) => ({
